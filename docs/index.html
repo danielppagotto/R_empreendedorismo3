@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Introdução ao R aplicado a pesquisas em empreendedorismo</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Daniel Pagotto" />
+    <link href="index_files/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="index_files/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
+    <link href="index_files/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Introdução ao R aplicado a pesquisas em empreendedorismo
+## R aplicado ao Panel Study of Entrepreneurial Dynamics
+### Daniel Pagotto
+### LAPEI/UFG e CIGETS/UFG
+
+---
+
+
+
+# Agradecimentos
+&lt;br&gt;
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="imagem/realizacao.png" alt=" " width="100%" height="100%" /&gt;
+&lt;p class="caption"&gt; &lt;/p&gt;
+&lt;/div&gt;
+
+
+class: inverse, middle, left
+# Divisão do curso 
+* **Módulo 1: conceitos básicos de R** 
+  + Cálculos básicos
+  + Tipos de variáveis e objetos
+  + O pacote dplyr para manipulação de dataframes
+  + O pacote ggplot2 para visualização de dados
+* **Módulo 2: usando o R para explorar o Global Entrepreneurship Monitor (GEM)**
+  + Compreendedo as bases 
+  + Tratando as bases 
+  + Análise Exploratória dos Dados do GEM
+* **Módulo 3: usando o R para explorar o Panel Study of Entrepreneurial Dynamics (PSED)**
+  + Compreendendo a base
+  + Tratando a base 
+  + Análise Exploratória dos Dados do PSED
+
+---
+class: inverse, middle, left
+# Objetivos do módulo 3
+- Demonstrar relevância do PSED
+- Explorar variáveis disponíveis no PSED 
+- Aplicar funções para manipular dataframes 
+- Aplicar análise exploratória dos dados
+
+---
+# Panel Study of Enterpreneurial Dynamics 
+
+#### - O PSED foi conduzido em duas edições. O PSED I iniciou em 1998 e o PSED II teve início em 2004. 
+
+#### - O PSED II foi uma iniciativa para coletar dados de uma amostra representativa de empreendedores americanos, ao longo do processo de criação de empresas, entre 2005 e 2011.   
+
+#### - O PSED foi coordenado por Richard Curtin e Paul Reynolds e contou com apoio de diversos pesquisadores de empreendedorismo, dentre eles: Howard Aldrich, Per Davidsson, William Gartner, Benson Honig, Martin Ruef, Scott Shane, entre outros.
+
+#### - O projeto foi conduzido no âmbito da Universidade de Michigan e contou com financiamento da Kauffman Foundation, US Small Business Administration e a National Science Foundation
+
+#### - Para mais informações, acesse o [site](http://www.psed.isr.umich.edu/psed/home)
+
+---
+# Publicações
+
+&lt;img src="imagem/artigo_psed2_1.png" width="90%" height="90%" style="display: block; margin: auto;" /&gt;
+---
+# Publicações
+
+&lt;img src="imagem/artigo_psed2_2.png" width="90%" height="90%" style="display: block; margin: auto;" /&gt;
+---
+# Publicações
+
+&lt;img src="imagem/artigo_psed2_3.png" width="90%" height="90%" style="display: block; margin: auto;" /&gt;
+---
+# Potencial do PSED 
+
+Capacidades dinâmicas
+
+&lt;img src="imagem/capacidades_dinamicas.png" width="90%" height="90%" style="display: block; margin: auto;" /&gt;
+
+---
+# Potencial do PSED 
+
+Plano de negócios 
+
+&lt;img src="imagem/effectuation.png" width="90%" height="90%" style="display: block; margin: auto;" /&gt;
+
+---
+# Potencial do PSED 
+
+Conversa com potenciais clientes 
+
+&lt;img src="imagem/clientes_potenciais.png" width="90%" height="90%" style="display: block; margin: auto;" /&gt;
+
+---
+# Potencial do PSED 
+
+Perfil dos empreendedores 
+
+&lt;img src="imagem/demografics.png" width="90%" height="90%" style="display: block; margin: auto;" /&gt;
+
+---
+# Potencial do PSED 
+Finanças 
+
+&lt;img src="imagem/personal_loans.png" width="90%" height="90%" style="display: block; margin: auto;" /&gt;
+
+---
+# Potencial do PSED 
+Inovação 
+
+&lt;img src="imagem/inovacao.png" width="90%" height="90%" style="display: block; margin: auto;" /&gt;
+
+---
+# Potencial do PSED 
+Internacionalização
+
+&lt;img src="imagem/internacionalizacao.png" width="90%" height="90%" style="display: block; margin: auto;" /&gt;
+
+
+---
+# Potencial do PSED 
+Motivação 
+
+&lt;img src="imagem/motivacao.png" width="90%" height="90%" style="display: block; margin: auto;" /&gt;
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create();
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
