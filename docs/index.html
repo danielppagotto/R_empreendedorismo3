@@ -130,6 +130,127 @@ Internacionalização
 Motivação 
 
 &lt;img src="imagem/motivacao.png" width="90%" height="90%" style="display: block; margin: auto;" /&gt;
+
+---
+# Tratando a base
+
+
+```r
+library(tidyverse)
+library(foreign)
+
+setwd("~/LAPEI/Curso R Lapei/modulo extra")
+
+psed &lt;- read.spss("psedii_scrn_ABCDEF.sav", use.value.labels = FALSE)
+psed_df &lt;- as.data.frame(psed)
+```
+
+---
+# Filtrando e selecionando dados
+Filtrando base para manter apenas empreendedores solo e cujos negócios estão operantes na wave E. 
+
+
+```r
+# filtrando para manter os negócios operantes
+psed_tratado &lt;- psed_df %&gt;% 
+  filter(AG2 &lt;2 &amp; BA50 != 3 &amp; CA50 != 3 &amp; DA50 != 50 &amp; EA50 != 3)
+
+# selecionado variáveis
+psed_tratado &lt;- psed_tratado %&gt;%  
+  select(AG2, AH1_1, AH2_1, AH6_1, AH11_1,AH12_1, AH13_1,
+         AQ4_1, AQ5_1, AQ6_1, AQ7_1, AQ8_1, AQ9_1, AQ10_1, AQ12x, 
+         BQ4_1, BQ5_1, BQ6_1, BQ7_1, BQ8_1, BQ9_1, BQ10_1, BQ12x, 
+         CQ4_1, CQ5_1, CQ6_1, CQ7_1, CQ8_1, CQ9_1, CQ10_1, CQ12x,
+         DQ4_1, DQ5_1, DQ6_1, DQ7_1, DQ8_1, DQ9_1, DQ10_1, DQ12x,
+         EQ4_1, EQ5_1, EQ6_1, EQ7_1, EQ8_1, EQ9_1, EQ10_1, EQ12x,
+         AR4,BR4,CR4,DR4,ER4, AS5, AS8, AS9, AS10, ES8, ES9, ES10,
+         AP1, AP2, AP3, AP4, AP5, AP6, AP7, AP8, AP9, AP10, AP11, AP12,
+         EP1, EP2, EP3, EP4, EP5, EP6, EP7, EP8, EP9, EP10, EP11, EP12) 
+```
+
+Para conhecer as variáveis selecionadas, acesse o dicionário de dados que preparamos para o curso ou o [codebook](http://www.psed.isr.umich.edu/psed/download_node/198) do PSED.
+
+---
+# Tratamentos - demografia
+A partir desse ponto, faremos muitos tratamentos na base antes de iniciar qualquer análise. 
+
+
+```r
+# recodificando sexo, escolaridade e renomeando variáveis
+psed_tratado &lt;- psed_tratado%&gt;% 
+  mutate(sexo = ifelse(AH1_1 == "1", "Masculino","Feminino"),.after=AH1_1) %&gt;% 
+  mutate(escolaridade = case_when(AH6_1 &lt; 4 ~ "Até EM",
+                                  AH6_1 &gt;= 4 &amp; AH6_1 &lt; 8 ~ "Ensino Superior",
+                                  AH6_1 &gt;= 8 ~ "Pós-graduação"),.after=AH6_1) %&gt;% 
+  rename(idade = AH2_1, industria = AH11_1, empreendedorismo = AH12_1,
+         negocios_possui = AH13_1, pesq_desenv = AS5, regional_a = AS8, 
+         regional_e = ES8, nacional_a = AS9, nacional_e = ES9,
+         internacional_a = AS10, internacional_e = ES10)
+
+# adicionando o status "NA" em variáveis preenchidas pelo valor 999999998, conforme dicionário de dados
+psed_tratado[psed_tratado == 999999998] &lt;- NA
+psed_tratado[psed_tratado == 999999999] &lt;- NA
+```
+
+---
+# Tratamentos - finanças
+Vamos criar variáveis considerando a fonte de financiamento: resersas pessoais, 3F (family, friends and fools), crédito e equity. 
+
+
+```r
+psed_tratado &lt;- psed_tratado %&gt;% 
+  rowwise() %&gt;% 
+  mutate(personal_savings_A = sum(c(AQ4_1),na.rm = TRUE),.after = AQ4_1) %&gt;% 
+  mutate(fff_A = sum(c(AQ5_1,AQ6_1),na.rm = TRUE),.after = AQ6_1) %&gt;% 
+  mutate(credit_A = sum(c(AQ7_1,AQ8_1,AQ9_1),na.rm = TRUE),.after = AQ9_1) %&gt;% 
+  mutate(personal_savings_B = sum(c(BQ4_1),na.rm = TRUE),.after = BQ4_1) %&gt;% 
+  mutate(fff_B = sum(c(BQ5_1,BQ6_1),na.rm = TRUE),.after = BQ6_1) %&gt;% 
+  mutate(credit_B = sum(c(BQ7_1,BQ8_1,BQ9_1),na.rm = TRUE),.after = BQ9_1) %&gt;% 
+  mutate(personal_savings_C = sum(c(CQ4_1),na.rm = TRUE),.after = CQ4_1) %&gt;% 
+  mutate(fff_C = sum(c(CQ5_1,CQ6_1),na.rm = TRUE),.after = CQ6_1) %&gt;% 
+  mutate(credit_C = sum(c(CQ7_1,CQ8_1,CQ9_1),na.rm = TRUE),.after = CQ9_1) %&gt;%
+  mutate(personal_savings_D = sum(c(DQ4_1),na.rm = TRUE, .after = DQ4_1)) %&gt;%
+  mutate(fff_D = sum(c(DQ5_1,DQ6_1),na.rm = TRUE),.after = DQ6_1) %&gt;% 
+  mutate(credit_D = sum(c(DQ7_1,DQ8_1,DQ9_1),na.rm = TRUE),.after = DQ9_1) %&gt;% 
+  mutate(personal_savings_E = sum(c(EQ4_1),na.rm = TRUE),.after = EQ4_1) %&gt;% 
+  mutate(fff_E = sum(c(EQ5_1,EQ6_1),na.rm = TRUE),.after = EQ6_1) %&gt;% 
+  mutate(credit_E = sum(c(EQ7_1,EQ8_1,EQ9_1),na.rm = TRUE),.after = EQ9_1) %&gt;% 
+  mutate(equity_A = AR4, equity_B = BR4, equity_C = CR4, equity_D = DR4, equity_E = ER4) 
+```
+
+---
+# Tratamentos - finanças
+Vamos criar variáveis financeiras com o acumulado de cada wave
+
+
+```r
+psed_tratado &lt;- psed_tratado %&gt;%
+  mutate(ps_acumulado_B = personal_savings_A + personal_savings_B,
+         ps_acumulado_C = ps_acumulado_B + personal_savings_C,
+         ps_acumulado_D = ps_acumulado_C + personal_savings_D,
+         ps_acumulado_E = ps_acumulado_D + personal_savings_E,
+         fff_acumulado_B = fff_A + fff_B,
+         fff_acumulado_C = fff_acumulado_B + fff_C,
+         fff_acumulado_D = fff_acumulado_C + fff_D,
+         fff_acumulado_E = fff_acumulado_D + fff_E,
+         credit_acumulado_B = credit_B + credit_A,
+         credit_acumulado_C = credit_acumulado_B + credit_C,
+         credit_acumulado_D = credit_acumulado_C + credit_D,
+         credit_acumulado_E = credit_acumulado_D + credit_E) 
+```
+
+---
+# Tratamento - normas sociedade
+Renomeando a variável sobre normas sociais
+
+```r
+psed_tratado &lt;- psed_tratado %&gt;% 
+                  rename(suporte_comunidade = AP1, autonomia = AP2, risco = AP3,
+                         criatividade = AP4, gestao_vida = AP5, empreendedorismo_jovens = AP6,
+                         suporte_gov_local = AP7, suporte_bancos = AP8, 
+                         suporte_grupos = AP9, amigos_empreendem = AP10, 
+                         familiares_empreendem = AP11, lideres = AP12)
+```
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
