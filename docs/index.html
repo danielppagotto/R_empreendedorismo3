@@ -309,7 +309,8 @@ escolaridade &lt;- psed_tratado %&gt;%
                   summarise(total = n()) 
 
 escolaridade %&gt;%  
-  PieDonut(aes(sexo,escolaridade,count = total),
+  PieDonut(aes(sexo,escolaridade,
+               count = total),
            explode = 2,
            title = "Escolaridade por sexo")
 ```

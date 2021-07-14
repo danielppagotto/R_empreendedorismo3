@@ -342,7 +342,8 @@ escolaridade <- psed_tratado %>%
                   summarise(total = n()) 
 
 escolaridade %>%  
-  PieDonut(aes(sexo,escolaridade,count = total),
+  PieDonut(aes(sexo,escolaridade,
+               count = total),
            explode = 2,
            title = "Escolaridade por sexo")
 
