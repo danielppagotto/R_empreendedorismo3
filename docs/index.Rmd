@@ -301,7 +301,7 @@ psed_tratado <- psed_tratado %>%
 ```
 
 ---
-# Análises
+# Análises - sexo
 A partir desse momento, serão realizadas algumas análises sobre a amostra resultante. Para esse estudo de caso, serão aplicadas análises comparando-se empreendedores e empreendedoras
 
 .pull-left[
@@ -333,7 +333,21 @@ total_sexo %>%
 ```
 ]
 ---
-# Análises 
+# Análises - idade
+Vamos criar um boxplot da variável idade 
+
+```{r boxplot, fig.height=4, message=FALSE, warning=FALSE, fig.align='center'}
+psed_tratado %>% 
+  ggplot(aes(x = sexo, y = idade, fill = sexo)) + geom_boxplot() + 
+  theme_minimal() + theme(legend.position = "none") + 
+  ggtitle("Boxplot de idades por sexo") +
+  scale_y_continuous(breaks = seq(20,90,5)) 
+```
+
+---
+# Análises - escolaridade
+Vamos comparar a escolaridade de ambos grupos da amostra.
+
 .pull-left[
 ```{r escolaridade, fig.show='hide', message=FALSE, warning=FALSE}
 library(webr)
@@ -360,3 +374,100 @@ escolaridade %>%
            title = "Escolaridade por sexo")
 ```
 ]
+
+---
+# Análises - experiências
+Dados sobre a experiência prévia na criação de empreendendimentos
+
+```{r experiencia previa, fig.height=4, fig.align="center"}
+psed_tratado %>% 
+  group_by(sexo) %>% 
+  summarise(media = mean(empreendedorismo)) %>% 
+  ggplot(aes(x=sexo, y = media, fill = sexo)) + geom_text(aes(label = round(media,2)), vjust = -0.5) + geom_col() + theme_classic() +  ggtitle("Experiência na criação de empresas",
+          "Quantos negócios teve previamente?")
+```
+
+---
+# Análises - experiências
+Dados sobre a experiência na indústria. Vamos fazer os gráficos e vamos atribuí-los a objetos. Depois usaremos o pacote `patchwork`para plotar ambos gráficos. A instalação do pacote é um pouco diferente. É necessário ter o pacote devtools instalado anteriormente.
+
+```{r}
+
+industria_colunas <- psed_tratado %>% 
+  group_by(sexo) %>% 
+  summarise(media = mean(industria)) %>% 
+  ggplot(aes(x=sexo, y = media, fill = sexo)) + 
+  geom_text(aes(label = round(media,2)), vjust = -0.5) + 
+  geom_col() + theme_minimal() + theme(legend.position = "none") + 
+  ggtitle("Experiência média na mesma indústria",
+          "Quantos anos atuou na mesma indústria do novo empreendimento?")
+
+industria_histogramas <- psed_tratado %>% 
+  ggplot(aes(x = industria, fill = sexo)) + 
+  geom_histogram(bins=15) + theme_minimal() + facet_wrap(~sexo, nrow = 2) +
+  theme(legend.position = "none") +
+  ggtitle("Histograma da experiência na mesma indústria",
+          "Quantos anos atuou na mesma indústria do novo empreendimento?")
+
+library(patchwork)
+
+# intall.packages("devtools")
+# devtools::install_github("thomasp85/patchwork")
+```
+---
+# Análises
+```{r fig.align="center"}
+industria_colunas / industria_histogramas
+```
+
+---
+# Análises - Inovação 
+
+```{r fig.show="hide", message=FALSE, warning=FALSE}
+psed_tratado %>% 
+  group_by(sexo,pesq_desenv_a) %>% 
+  summarise(total = n()) %>% 
+  mutate(pesq_desenv_a = ifelse(pesq_desenv_a == 1, "Sim","Não")) %>% 
+  PieDonut(aes(sexo,pesq_desenv_a,count = total),
+           explode = 2, title = "P&D é uma prioridade para o empreendimento wave A")
+
+psed_tratado %>% 
+  group_by(sexo,pesq_desenv_e) %>% 
+  summarise(total = n()) %>% 
+  filter(pesq_desenv_e != 8) %>% 
+  mutate(pesq_desenv_e = ifelse(pesq_desenv_e == 1, "Sim","Não")) %>% 
+  PieDonut(aes(sexo,pesq_desenv_e,count = total),
+           explode = 2,title = "P&D é uma prioridade para o empreendimento wave E")
+
+```
+
+---
+# Inovação
+
+.pull-left[
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+psed_tratado %>% 
+  group_by(sexo,pesq_desenv_a) %>% 
+  summarise(total = n()) %>% 
+  mutate(pesq_desenv_a = ifelse(pesq_desenv_a == 1, "Sim","Não")) %>% 
+  PieDonut(aes(sexo,pesq_desenv_a,count = total),
+           explode = 2, title = "P&D é uma prioridade para o empreendimento wave A")
+```
+]
+
+.pull-right[
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+psed_tratado %>% 
+  group_by(sexo,pesq_desenv_e) %>% 
+  summarise(total = n()) %>% 
+  filter(pesq_desenv_e != 8) %>% 
+  mutate(pesq_desenv_e = ifelse(pesq_desenv_e == 1, "Sim","Não")) %>% 
+  PieDonut(aes(sexo,pesq_desenv_e,count = total),
+           explode = 2,title = "P&D é uma prioridade para o empreendimento wave E")
+```
+]
+
+
+
+
