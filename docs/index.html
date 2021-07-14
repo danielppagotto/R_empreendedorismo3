@@ -275,6 +275,49 @@ psed_tratado &lt;- psed_tratado %&gt;%
 
 ---
 # Análises
+A partir desse momento, serão realizadas algumas análises sobre a amostra resultante. Para esse estudo de caso, serão aplicadas análises comparando-se empreendedores e empreendedoras
+
+.pull-left[
+
+```r
+total_sexo &lt;- psed_tratado %&gt;% 
+  group_by(sexo) %&gt;% 
+  count()
+
+total_sexo %&gt;%   
+  ggplot(aes(x = sexo, y = n)) + 
+  geom_col(aes(fill=sexo)) +
+  geom_text(aes(label = n), 
+            vjust = -0.5) + 
+  ylab("Total") +
+  ggtitle("Frequência por sexo") +
+  theme_classic()
+```
+]
+
+.pull-right[
+![](index_files/figure-html/grafico-1.png)&lt;!-- --&gt;
+]
+---
+# Análises 
+.pull-left[
+
+```r
+library(webr)
+escolaridade &lt;- psed_tratado %&gt;% 
+                  group_by(sexo,escolaridade) %&gt;% 
+                  summarise(total = n()) 
+
+escolaridade %&gt;%  
+  PieDonut(aes(sexo,escolaridade,count = total),
+           explode = 2,
+           title = "Escolaridade por sexo")
+```
+]
+
+.pull-right[
+![](index_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+]
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

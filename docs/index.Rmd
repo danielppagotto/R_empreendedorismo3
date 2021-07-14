@@ -302,5 +302,60 @@ psed_tratado <- psed_tratado %>%
 
 ---
 # Análises
+A partir desse momento, serão realizadas algumas análises sobre a amostra resultante. Para esse estudo de caso, serão aplicadas análises comparando-se empreendedores e empreendedoras
+
+.pull-left[
+```{r sexo_total, fig.show='hide'}
+
+total_sexo <- psed_tratado %>% 
+  group_by(sexo) %>% 
+  count()
+
+total_sexo %>%   
+  ggplot(aes(x = sexo, y = n)) + 
+  geom_col(aes(fill=sexo)) +
+  geom_text(aes(label = n), 
+            vjust = -0.5) + 
+  ylab("Total") +
+  ggtitle("Frequência por sexo") +
+  theme_classic()
+
+```
+]
+
+.pull-right[
+```{r grafico, echo=FALSE, message=FALSE, warning=FALSE}
+total_sexo %>%   
+  ggplot(aes(x = sexo, y = n)) + geom_col(aes(fill=sexo)) +
+  geom_text(aes(label = n), vjust = -0.5) + ylab("Total") +
+  ggtitle("Frequência por sexo") +
+  theme_classic()
+```
+]
+---
+# Análises 
+.pull-left[
+```{r escolaridade, fig.show='hide', message=FALSE, warning=FALSE}
+library(webr)
+escolaridade <- psed_tratado %>% 
+                  group_by(sexo,escolaridade) %>% 
+                  summarise(total = n()) 
+
+escolaridade %>%  
+  PieDonut(aes(sexo,escolaridade,count = total),
+           explode = 2,
+           title = "Escolaridade por sexo")
+
+```
+]
+
+.pull-right[
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 
 
+escolaridade %>%  
+  PieDonut(aes(sexo,escolaridade,count = total),
+           explode = 2,
+           title = "Escolaridade por sexo")
+```
+]
