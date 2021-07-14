@@ -170,8 +170,10 @@ setwd("~/LAPEI/Curso R Lapei/modulo extra")
 psed <- read.spss("psedii_scrn_ABCDEF.sav", use.value.labels = FALSE)
 psed_df <- as.data.frame(psed)
 
-```
+# Para baixar a base, retire o # e rode a linha.  
+# psed_df <- read_csv("https://raw.githubusercontent.com/danielppagotto/R_empreendedorismo3/main/arquivos%20de%20bases/psed_2.csv") 
 
+```
 ---
 # Filtrando e selecionando dados
 Filtrando base para manter apenas empreendedores solo e cujos negócios estão operantes na wave E. 
@@ -184,14 +186,14 @@ psed_tratado <- psed_df %>%
 # selecionado variáveis
 psed_tratado <- psed_tratado %>%  
   select(AG2, AH1_1, AH2_1, AH6_1, AH11_1,AH12_1, AH13_1,
-         AQ4_1, AQ5_1, AQ6_1, AQ7_1, AQ8_1, AQ9_1, AQ10_1, AQ12x, 
-         BQ4_1, BQ5_1, BQ6_1, BQ7_1, BQ8_1, BQ9_1, BQ10_1, BQ12x, 
-         CQ4_1, CQ5_1, CQ6_1, CQ7_1, CQ8_1, CQ9_1, CQ10_1, CQ12x,
-         DQ4_1, DQ5_1, DQ6_1, DQ7_1, DQ8_1, DQ9_1, DQ10_1, DQ12x,
-         EQ4_1, EQ5_1, EQ6_1, EQ7_1, EQ8_1, EQ9_1, EQ10_1, EQ12x,
-         AR4,BR4,CR4,DR4,ER4, AS5,ES5, AS8, AS9, AS10, ES8, ES9, ES10,
-         AP1, AP2, AP3, AP4, AP5, AP6, AP7, AP8, AP9, AP10, AP11, AP12,
-         EP1, EP2, EP3, EP4, EP5, EP6, EP7, EP8, EP9, EP10, EP11, EP12) 
+         AQ4_1, AQ5_1, AQ6_1, AQ7_1, AQ8_1, AQ9_1, AQ10_1,  
+         BQ4_1, BQ5_1, BQ6_1, BQ7_1, BQ8_1, BQ9_1, BQ10_1,  
+         CQ4_1, CQ5_1, CQ6_1, CQ7_1, CQ8_1, CQ9_1, CQ10_1, 
+         DQ4_1, DQ5_1, DQ6_1, DQ7_1, DQ8_1, DQ9_1, DQ10_1, 
+         EQ4_1, EQ5_1, EQ6_1, EQ7_1, EQ8_1, EQ9_1, EQ10_1, 
+         AS5, AS8, AS9, ES5, ES8, ES9, 
+         AP1, AP2, AP3, AP4, AP5, AP6, AP7, AP8, AP9, AP10, AP11, AP12, 
+         EP1, EP2, EP3, EP4, EP5, EP6, EP7, EP8, EP9, EP10, EP11, EP12)
 
 ```
 
@@ -210,8 +212,7 @@ psed_tratado <- psed_tratado%>%
                                   AH6_1 >= 8 ~ "Pós-graduação"),.after=AH6_1) %>% 
   rename(idade = AH2_1, industria = AH11_1, empreendedorismo = AH12_1,
          negocios_possui = AH13_1, pesq_desenv_a = AS5, pesq_desenv_e = ES5, 
-         regional_a = AS8, regional_e = ES8, nacional_a = AS9, nacional_e = ES9,
-         internacional_a = AS10, internacional_e = ES10)
+         regional_a = AS8, regional_e = ES8, nacional_a = AS9, nacional_e = ES9)
 
 # adicionando o status "NA" em variáveis preenchidas pelo valor 999999998, conforme dicionário de dados
 psed_tratado[psed_tratado == 999999998] <- NA
@@ -221,29 +222,27 @@ psed_tratado[psed_tratado == 999999999] <- NA
 
 ---
 # Tratamentos - finanças
-Vamos criar variáveis considerando a fonte de financiamento: resersas pessoais, 3F (family, friends and fools), crédito e equity. 
+Vamos criar variáveis considerando a fonte de financiamento: resersas pessoais, 3F (family, friends and fools) e crédito. 
 
 ```{r financiamento}
-
 
 psed_tratado <- psed_tratado %>% 
   rowwise() %>% 
   mutate(personal_savings_A = sum(c(AQ4_1),na.rm = TRUE),.after = AQ4_1) %>% 
-  mutate(fff_A = sum(c(AQ5_1,AQ6_1),na.rm = TRUE),.after = AQ6_1) %>% 
-  mutate(credit_A = sum(c(AQ7_1,AQ8_1,AQ9_1),na.rm = TRUE),.after = AQ9_1) %>% 
+  mutate(fff_A = sum(c(AQ5_1,AQ6_1),na.rm = TRUE), .after = AQ6_1) %>% 
+  mutate(credit_A = sum(c(AQ7_1,AQ8_1,AQ9_1,AQ10_1),na.rm = TRUE),.after = AQ10_1) %>% 
   mutate(personal_savings_B = sum(c(BQ4_1),na.rm = TRUE),.after = BQ4_1) %>% 
-  mutate(fff_B = sum(c(BQ5_1,BQ6_1),na.rm = TRUE),.after = BQ6_1) %>% 
-  mutate(credit_B = sum(c(BQ7_1,BQ8_1,BQ9_1),na.rm = TRUE),.after = BQ9_1) %>% 
+  mutate(fff_B = sum(c(BQ5_1,BQ6_1),na.rm = TRUE), .after = BQ6_1) %>% 
+  mutate(credit_B = sum(c(BQ7_1,BQ8_1,BQ9_1,BQ10_1),na.rm = TRUE),.after = BQ10_1) %>% 
   mutate(personal_savings_C = sum(c(CQ4_1),na.rm = TRUE),.after = CQ4_1) %>% 
-  mutate(fff_C = sum(c(CQ5_1,CQ6_1),na.rm = TRUE),.after = CQ6_1) %>% 
-  mutate(credit_C = sum(c(CQ7_1,CQ8_1,CQ9_1),na.rm = TRUE),.after = CQ9_1) %>%
+  mutate(fff_C = sum(c(CQ5_1,CQ6_1),na.rm = TRUE), .after = CQ6_1) %>% 
+  mutate(credit_C = sum(c(CQ7_1,CQ8_1,CQ9_1,CQ10_1),na.rm = TRUE),.after = CQ10_1) %>%
   mutate(personal_savings_D = sum(c(DQ4_1),na.rm = TRUE, .after = DQ4_1)) %>%
-  mutate(fff_D = sum(c(DQ5_1,DQ6_1),na.rm = TRUE),.after = DQ6_1) %>% 
-  mutate(credit_D = sum(c(DQ7_1,DQ8_1,DQ9_1),na.rm = TRUE),.after = DQ9_1) %>% 
+  mutate(fff_D = sum(c(DQ5_1,DQ6_1),na.rm = TRUE), .after = DQ6_1) %>% 
+  mutate(credit_D = sum(c(DQ7_1,DQ8_1,DQ9_1,DQ10_1),na.rm = TRUE),.after = DQ10_1) %>% 
   mutate(personal_savings_E = sum(c(EQ4_1),na.rm = TRUE),.after = EQ4_1) %>% 
-  mutate(fff_E = sum(c(EQ5_1,EQ6_1),na.rm = TRUE),.after = EQ6_1) %>% 
-  mutate(credit_E = sum(c(EQ7_1,EQ8_1,EQ9_1),na.rm = TRUE),.after = EQ9_1) %>% 
-  mutate(equity_A = AR4, equity_B = BR4, equity_C = CR4, equity_D = DR4, equity_E = ER4) 
+  mutate(fff_E = sum(c(EQ5_1,EQ6_1),na.rm = TRUE), .after = EQ6_1) %>% 
+  mutate(credit_E = sum(c(EQ7_1,EQ8_1,EQ9_1,EQ10_1),na.rm = TRUE),.after = EQ10_1)  
 
 ```
 
@@ -270,14 +269,12 @@ psed_tratado <- psed_tratado %>%
 
 ---
 # Tratamento - normas sociedade
-Renomeando a variável sobre normas sociais
+Renomeando algumas das variáveis sobre normais sociais. Vamos utilizar apenas algumas. Por isso, renomeei apenas algumas das variáveis sobre a comunidade.
 ```{r}
-psed_tratado <- psed_tratado %>% 
-                  rename(suporte_comunidade = AP1, autonomia = AP2, risco = AP3,
-                         criatividade = AP4, gestao_vida = AP5, empreendedorismo_jovens = AP6,
-                         suporte_gov_local = AP7, suporte_bancos = AP8, 
-                         suporte_grupos = AP9, amigos_empreendem = AP10, 
-                         familiares_empreendem = AP11, lideres = AP12)
+psed_tratado <- psed_tratado %>%
+                  rename(suporte_comunidade_a = AP1, autonomia_a = AP2, risco_a = AP3,
+                         criatividade_a = AP4, suporte_comunidade_e = EP1, 
+                         autonomia_e = EP2, risco_e = EP3, criatividade_e = EP4)
 
 ```
 
@@ -286,13 +283,16 @@ psed_tratado <- psed_tratado %>%
 
 ```{r select}
 psed_tratado <- psed_tratado %>% 
-  select(sexo,idade,escolaridade,industria,empreendedorismo,negocios_possui,personal_savings_A,
-         personal_savings_B,personal_savings_C,ps_acumulado_B,ps_acumulado_C,fff_A,fff_B,fff_C,
-         fff_acumulado_B,fff_acumulado_C,credit_A,credit_B,credit_C,credit_acumulado_B,
-         credit_acumulado_C,pesq_desenv_a,pesq_desenv_e,regional_a,nacional_a,internacional_a,
-         regional_e,nacional_e,internacional_e,suporte_comunidade, autonomia, risco, criatividade,
-         gestao_vida, empreendedorismo_jovens, suporte_grupos, amigos_empreendem,
-         familiares_empreendem, lideres) %>% 
+  select(sexo, idade, escolaridade, industria, empreendedorismo, negocios_possui,
+         personal_savings_A, personal_savings_B, personal_savings_C, personal_savings_D,
+         personal_savings_E, ps_acumulado_B, ps_acumulado_C, ps_acumulado_D, 
+         ps_acumulado_E, fff_A, fff_B, fff_C, fff_D, fff_E, fff_acumulado_B,
+         fff_acumulado_C, fff_acumulado_D, fff_acumulado_E, credit_A, credit_B, 
+         credit_C, credit_D, credit_E, credit_acumulado_B, credit_acumulado_C,
+         credit_acumulado_D, credit_acumulado_E, pesq_desenv_a, pesq_desenv_e,
+         regional_a,nacional_a, regional_e,nacional_e, suporte_comunidade_a, 
+         autonomia_a, risco_a, criatividade_a, suporte_comunidade_e, autonomia_e, 
+         risco_e, criatividade_e) %>% 
   filter(idade < 99) %>% 
   filter(industria < 98) %>% 
   filter(empreendedorismo < 10) %>% 
