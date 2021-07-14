@@ -441,6 +441,8 @@ psed_tratado %>%
 
 ```
 
+Os gráficos estão no próximo slide. 
+
 ---
 # Inovação
 
