@@ -274,6 +274,103 @@ psed_tratado &lt;- psed_tratado %&gt;%
 ```
 
 ---
+# Análises - Estatística Descritiva
+
+Vamos usar algumas estatísticas descritivas considerando a amostra como um todo 
+
+
+```r
+summary(psed_tratado)
+```
+
+```
+##      sexo               idade      escolaridade         industria    
+##  Length:153         Min.   :22.0   Length:153         Min.   : 0.00  
+##  Class :character   1st Qu.:39.0   Class :character   1st Qu.: 3.00  
+##  Mode  :character   Median :49.0   Mode  :character   Median :10.00  
+##                     Mean   :47.6                      Mean   :12.58  
+##                     3rd Qu.:56.0                      3rd Qu.:20.00  
+##                     Max.   :74.0                      Max.   :45.00  
+##  empreendedorismo negocios_possui  personal_savings_A personal_savings_B
+##  Min.   :0.000    Min.   :0.0000   Min.   :    0      Min.   :    0     
+##  1st Qu.:0.000    1st Qu.:0.0000   1st Qu.:  299      1st Qu.:    0     
+##  Median :0.000    Median :0.0000   Median : 2000      Median :    0     
+##  Mean   :1.013    Mean   :0.2941   Mean   : 8005      Mean   : 2151     
+##  3rd Qu.:2.000    3rd Qu.:0.0000   3rd Qu.:10000      3rd Qu.:   30     
+##  Max.   :5.000    Max.   :4.0000   Max.   :75000      Max.   :45000     
+##  personal_savings_C personal_savings_D personal_savings_E ps_acumulado_B 
+##  Min.   :     0     Min.   :     0     Min.   :     0     Min.   :    0  
+##  1st Qu.:     0     1st Qu.:     0     1st Qu.:     0     1st Qu.: 1000  
+##  Median :     0     Median :     0     Median :     0     Median : 3000  
+##  Mean   :  4767     Mean   :  5321     Mean   :  3672     Mean   :10156  
+##  3rd Qu.:     0     3rd Qu.:     0     3rd Qu.:     0     3rd Qu.:10000  
+##  Max.   :150000     Max.   :200000     Max.   :200000     Max.   :85000  
+##  ps_acumulado_C   ps_acumulado_D   ps_acumulado_E       fff_A       
+##  Min.   :     0   Min.   :     0   Min.   :     0   Min.   :     0  
+##  1st Qu.:  1150   1st Qu.:  2000   1st Qu.:  2000   1st Qu.:     0  
+##  Median :  4000   Median :  5200   Median :  6500   Median :     0  
+##  Mean   : 14923   Mean   : 20244   Mean   : 23916   Mean   :  2088  
+##  3rd Qu.: 15000   3rd Qu.: 20100   3rd Qu.: 25000   3rd Qu.:     0  
+##  Max.   :180000   Max.   :243000   Max.   :350000   Max.   :100000  
+##      fff_B             fff_C             fff_D            fff_E        
+##  Min.   :    0.0   Min.   :   0.00   Min.   :     0   Min.   :    0.0  
+##  1st Qu.:    0.0   1st Qu.:   0.00   1st Qu.:     0   1st Qu.:    0.0  
+##  Median :    0.0   Median :   0.00   Median :     0   Median :    0.0  
+##  Mean   :  202.6   Mean   :  87.25   Mean   :  1072   Mean   :  488.9  
+##  3rd Qu.:    0.0   3rd Qu.:   0.00   3rd Qu.:     0   3rd Qu.:    0.0  
+##  Max.   :20000.0   Max.   :7000.00   Max.   :150000   Max.   :40000.0  
+##  fff_acumulado_B  fff_acumulado_C  fff_acumulado_D  fff_acumulado_E 
+##  Min.   :     0   Min.   :     0   Min.   :     0   Min.   :     0  
+##  1st Qu.:     0   1st Qu.:     0   1st Qu.:     0   1st Qu.:     0  
+##  Median :     0   Median :     0   Median :     0   Median :     0  
+##  Mean   :  2291   Mean   :  2378   Mean   :  3450   Mean   :  3939  
+##  3rd Qu.:     0   3rd Qu.:     0   3rd Qu.:     0   3rd Qu.:     0  
+##  Max.   :100000   Max.   :100000   Max.   :250000   Max.   :250000  
+##     credit_A         credit_B          credit_C         credit_D      
+##  Min.   :     0   Min.   :    0.0   Min.   :     0   Min.   :      0  
+##  1st Qu.:     0   1st Qu.:    0.0   1st Qu.:     0   1st Qu.:      0  
+##  Median :     0   Median :    0.0   Median :     0   Median :      0  
+##  Mean   :  5921   Mean   :  879.4   Mean   :  4960   Mean   :  10396  
+##  3rd Qu.:     0   3rd Qu.:    0.0   3rd Qu.:     0   3rd Qu.:      0  
+##  Max.   :244000   Max.   :80000.0   Max.   :600000   Max.   :1030000  
+##     credit_E       credit_acumulado_B credit_acumulado_C credit_acumulado_D
+##  Min.   :    0.0   Min.   :     0     Min.   :     0     Min.   :      0   
+##  1st Qu.:    0.0   1st Qu.:     0     1st Qu.:     0     1st Qu.:      0   
+##  Median :    0.0   Median :     0     Median :     0     Median :      0   
+##  Mean   :  636.6   Mean   :  6801     Mean   : 11761     Mean   :  22157   
+##  3rd Qu.:    0.0   3rd Qu.:     0     3rd Qu.:     0     3rd Qu.:      0   
+##  Max.   :62000.0   Max.   :324000     Max.   :924000     Max.   :1954000   
+##  credit_acumulado_E pesq_desenv_a   pesq_desenv_e     regional_a   
+##  Min.   :      0    Min.   :1.000   Min.   :1.000   Min.   : 0.00  
+##  1st Qu.:      0    1st Qu.:5.000   1st Qu.:5.000   1st Qu.: 1.00  
+##  Median :      0    Median :5.000   Median :5.000   Median :20.00  
+##  Mean   :  22794    Mean   :4.111   Mean   :4.288   Mean   :21.24  
+##  3rd Qu.:    400    3rd Qu.:5.000   3rd Qu.:5.000   3rd Qu.:30.00  
+##  Max.   :1954000    Max.   :5.000   Max.   :8.000   Max.   :99.00  
+##    nacional_a       regional_e       nacional_e     suporte_comunidade_a
+##  Min.   :  0.00   Min.   :  0.00   Min.   :  0.00   Min.   :1.000       
+##  1st Qu.:  0.00   1st Qu.:  0.00   1st Qu.:  0.00   1st Qu.:1.000       
+##  Median :  5.00   Median : 10.00   Median :  2.00   Median :2.000       
+##  Mean   : 20.11   Mean   : 19.46   Mean   : 18.25   Mean   :2.235       
+##  3rd Qu.: 25.00   3rd Qu.: 25.00   3rd Qu.: 25.00   3rd Qu.:3.000       
+##  Max.   :100.00   Max.   :100.00   Max.   :100.00   Max.   :8.000       
+##   autonomia_a      risco_a      criatividade_a  suporte_comunidade_e
+##  Min.   :1.00   Min.   :1.000   Min.   :1.000   Min.   :1.00        
+##  1st Qu.:2.00   1st Qu.:2.000   1st Qu.:2.000   1st Qu.:1.00        
+##  Median :2.00   Median :2.000   Median :2.000   Median :2.00        
+##  Mean   :2.15   Mean   :2.412   Mean   :2.275   Mean   :2.17        
+##  3rd Qu.:3.00   3rd Qu.:3.000   3rd Qu.:3.000   3rd Qu.:3.00        
+##  Max.   :5.00   Max.   :5.000   Max.   :5.000   Max.   :5.00        
+##   autonomia_e       risco_e      criatividade_e 
+##  Min.   :1.000   Min.   :1.000   Min.   :1.000  
+##  1st Qu.:1.000   1st Qu.:2.000   1st Qu.:2.000  
+##  Median :2.000   Median :2.000   Median :2.000  
+##  Mean   :2.039   Mean   :2.458   Mean   :2.242  
+##  3rd Qu.:2.000   3rd Qu.:3.000   3rd Qu.:3.000  
+##  Max.   :5.000   Max.   :5.000   Max.   :5.000
+```
+
+---
 # Análises - sexo
 A partir desse momento, serão realizadas algumas análises sobre a amostra resultante. Para esse estudo de caso, serão aplicadas análises comparando-se empreendedores e empreendedoras
 
@@ -334,7 +431,7 @@ escolaridade %&gt;%
 ]
 
 .pull-right[
-![](index_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+![](index_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
 ]
 
 ---
@@ -386,7 +483,7 @@ library(patchwork)
 industria_colunas / industria_histogramas
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-6-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-7-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # Análises - Inovação 
@@ -414,15 +511,102 @@ psed_tratado %&gt;%
 Os gráficos estão no próximo slide. 
 
 ---
-# Inovação
+# Análises - Inovação
 
 .pull-left[
-![](index_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
+![](index_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
 ]
 
 .pull-right[
-![](index_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
+![](index_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
 ]
+
+---
+# Análises - Finanças
+
+Fiz um tratamento inicial. Nesse caso, estamos agrupando as observações (linhas) por sexo e depois sumarizando as variáveis de diferentes fontes de financiamento para cada wave (de A até E).  
+
+
+```r
+financas_acumulada &lt;- psed_tratado %&gt;% 
+      group_by(sexo) %&gt;% 
+      summarise(ps_a = mean(personal_savings_A,na.rm = TRUE),
+                fff_a = mean(fff_A,na.rm = TRUE),
+                credit_a = mean(credit_A,na.rm = TRUE),
+                ps_b = mean(ps_acumulado_B, na.rm = TRUE),
+                fff_b = mean(fff_acumulado_B, na.rm = TRUE),
+                credit_b = mean(credit_acumulado_B, na.rm = TRUE),
+                ps_c = mean(ps_acumulado_C, na.rm = TRUE),
+                fff_c = mean(fff_acumulado_C, na.rm = TRUE),
+                credit_c = mean(credit_acumulado_C, na.rm = TRUE),
+                ps_d = mean(ps_acumulado_D, na.rm = TRUE),
+                fff_d = mean(fff_acumulado_D, na.rm = TRUE),
+                credit_d = mean(credit_acumulado_D, na.rm = TRUE),
+                ps_e = mean(ps_acumulado_E, na.rm = TRUE),
+                fff_e = mean(fff_acumulado_E, na.rm = TRUE),
+                credit_e = mean(credit_acumulado_E, na.rm = TRUE)) 
+```
+
+---
+# Análises - Finanças 
+Em sequência, usamos a função pivot_longer para inverter a base de um formato "amplo" para "longo". Em sequência, criei uma variável correspondente a cada wave (onda). 
+
+
+```r
+library(tidyr)
+financas_acumulada &lt;- financas_acumulada %&gt;% 
+  pivot_longer(!sexo,names_to = "fontes",values_to="valores") %&gt;% 
+  separate(fontes, into = c("fonte","wave"), sep = "_") %&gt;% 
+  mutate(ano = case_when(wave == "a" ~ 2006,
+                         wave == "b" ~ 2007,
+                         wave == "c" ~ 2008,
+                         wave == "d" ~ 2009,
+                         wave == "e" ~ 2010))
+```
+
+---
+# Análises - Finanças 
+Por fim, vamos visualizar a evolução do capital financeiro de modo acumulado entre as diferentas ondas. 
+
+
+```r
+financas_acumulada %&gt;% 
+  ggplot(aes(x = ano, y = valores, fill = sexo)) + geom_col(position = "dodge") + 
+  facet_grid(~fonte) + theme_minimal()
+```
+
+&lt;img src="index_files/figure-html/unnamed-chunk-13-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+# Análises - Expansões
+
+Na seção S do PSED, os entrevistados são questionados quanto ao percentual de clientes no âmbito regional e nacional. Vamos calcular a variação entre o esperado na wave A e o alcançado na wave E. 
+.pull-left[
+
+```r
+psed_tratado &lt;- psed_tratado %&gt;% 
+  rowwise() %&gt;% 
+  mutate(expansao_regional = regional_e - regional_a,
+         expansao_nacional = nacional_e - nacional_a)
+
+psed_tratado %&gt;% 
+  ggplot(aes(x = expansao_regional)) + geom_histogram(bins = 10) + 
+  theme_minimal()
+```
+
+Quais motivos podem explicar isso? 
+]
+
+.pull-right[
+![](index_files/figure-html/unnamed-chunk-15-1.png)&lt;!-- --&gt;
+]
+
+---
+class: inverse, middle, center
+
+# Obrigado
+
+**Daniel Pagotto** | danielppagotto@gmail.com | [LinkedIn](https://www.linkedin.com/in/daniel-do-prado-pagotto-bab62a50/)
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

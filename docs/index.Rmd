@@ -222,7 +222,7 @@ psed_tratado[psed_tratado == 999999999] <- NA
 
 ---
 # Tratamentos - finanças
-Vamos criar variáveis considerando a fonte de financiamento: resersas pessoais, 3F (family, friends and fools) e crédito. 
+Vamos criar variáveis considerando a fonte de financiamento: reservas pessoais, 3F (family, friends and fools) e crédito. 
 
 ```{r financiamento}
 
@@ -269,7 +269,7 @@ psed_tratado <- psed_tratado %>%
 
 ---
 # Tratamento - normas sociedade
-Renomeando algumas das variáveis sobre normais sociais. Vamos utilizar apenas algumas. Por isso, renomeei apenas algumas das variáveis sobre a comunidade.
+Renomeando algumas das variáveis sobre normas sociais. Vamos utilizar apenas algumas. Por isso, renomeei apenas algumas das variáveis sobre a comunidade.
 ```{r}
 psed_tratado <- psed_tratado %>%
                   rename(suporte_comunidade_a = AP1, autonomia_a = AP2, risco_a = AP3,
@@ -298,6 +298,15 @@ psed_tratado <- psed_tratado %>%
   filter(empreendedorismo < 10) %>% 
   filter(regional_e < 998) %>% 
   filter(regional_a < 998)
+```
+
+---
+# Análises - Estatística Descritiva
+
+Vamos usar algumas estatísticas descritivas considerando a amostra como um todo 
+
+```{r fig.height=2}
+summary(psed_tratado)
 ```
 
 ---
@@ -444,7 +453,7 @@ psed_tratado %>%
 Os gráficos estão no próximo slide. 
 
 ---
-# Inovação
+# Análises - Inovação
 
 .pull-left[
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
@@ -470,6 +479,89 @@ psed_tratado %>%
 ```
 ]
 
+---
+# Análises - Finanças
 
+Fiz um tratamento inicial. Nesse caso, estamos agrupando as observações (linhas) por sexo e depois sumarizando as variáveis de diferentes fontes de financiamento para cada wave (de A até E).  
 
+```{r results = 'hide'}
+financas_acumulada <- psed_tratado %>% 
+      group_by(sexo) %>% 
+      summarise(ps_a = mean(personal_savings_A,na.rm = TRUE),
+                fff_a = mean(fff_A,na.rm = TRUE),
+                credit_a = mean(credit_A,na.rm = TRUE),
+                ps_b = mean(ps_acumulado_B, na.rm = TRUE),
+                fff_b = mean(fff_acumulado_B, na.rm = TRUE),
+                credit_b = mean(credit_acumulado_B, na.rm = TRUE),
+                ps_c = mean(ps_acumulado_C, na.rm = TRUE),
+                fff_c = mean(fff_acumulado_C, na.rm = TRUE),
+                credit_c = mean(credit_acumulado_C, na.rm = TRUE),
+                ps_d = mean(ps_acumulado_D, na.rm = TRUE),
+                fff_d = mean(fff_acumulado_D, na.rm = TRUE),
+                credit_d = mean(credit_acumulado_D, na.rm = TRUE),
+                ps_e = mean(ps_acumulado_E, na.rm = TRUE),
+                fff_e = mean(fff_acumulado_E, na.rm = TRUE),
+                credit_e = mean(credit_acumulado_E, na.rm = TRUE)) 
 
+```
+
+---
+# Análises - Finanças 
+Em sequência, usamos a função pivot_longer para inverter a base de um formato "amplo" para "longo". Em sequência, criei uma variável correspondente a cada wave (onda). 
+
+```{r}
+library(tidyr)
+financas_acumulada <- financas_acumulada %>% 
+  pivot_longer(!sexo,names_to = "fontes",values_to="valores") %>% 
+  separate(fontes, into = c("fonte","wave"), sep = "_") %>% 
+  mutate(ano = case_when(wave == "a" ~ 2006,
+                         wave == "b" ~ 2007,
+                         wave == "c" ~ 2008,
+                         wave == "d" ~ 2009,
+                         wave == "e" ~ 2010))
+```
+
+---
+# Análises - Finanças 
+Por fim, vamos visualizar a evolução do capital financeiro de modo acumulado entre as diferentas ondas. 
+
+```{r fig.height=5, fig.align='center'}
+financas_acumulada %>% 
+  ggplot(aes(x = ano, y = valores, fill = sexo)) + geom_col(position = "dodge") + 
+  facet_grid(~fonte) + theme_minimal()
+```
+
+---
+# Análises - Expansões
+
+Na seção S do PSED, os entrevistados são questionados quanto ao percentual de clientes no âmbito regional e nacional. Vamos calcular a variação entre o esperado na wave A e o alcançado na wave E. 
+.pull-left[
+```{r fig.show='hide'}
+psed_tratado <- psed_tratado %>% 
+  rowwise() %>% 
+  mutate(expansao_regional = regional_e - regional_a,
+         expansao_nacional = nacional_e - nacional_a)
+
+psed_tratado %>% 
+  ggplot(aes(x = expansao_regional)) + geom_histogram(bins = 10) + 
+  theme_minimal()
+```
+
+Quais motivos podem explicar isso? 
+]
+
+.pull-right[
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+psed_tratado %>% 
+  ggplot(aes(x = expansao_regional)) + geom_histogram(bins = 10) + 
+  theme_minimal()
+
+```
+]
+
+---
+class: inverse, middle, center
+
+# Obrigado
+
+**Daniel Pagotto** | danielppagotto@gmail.com | [LinkedIn](https://www.linkedin.com/in/daniel-do-prado-pagotto-bab62a50/)
